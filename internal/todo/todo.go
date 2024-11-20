@@ -13,8 +13,13 @@ type Item struct {
 	Status string
 }
 
+type Manager interface {
+	InsertItem(ctx context.Context, item db.Item) error
+	GetAllItems(ctx context.Context) ([]db.Item, error)
+}
+
 type Service struct {
-	db *db.DB
+	db Manager
 }
 
 func NewService(db *db.DB) *Service {
@@ -42,7 +47,7 @@ func (svc *Service) Add(todo string) error {
 	}); err != nil {
 		return fmt.Errorf("failed to insert item: %w", err)
 	}
-	return nil 
+	return nil
 }
 
 func (svc *Service) GetAll() ([]Item, error) {
@@ -61,7 +66,7 @@ func (svc *Service) GetAll() ([]Item, error) {
 	return results, nil
 }
 
-func (svc *Service) Search(query string) ([]string , error){
+func (svc *Service) Search(query string) ([]string, error) {
 	items, err := svc.GetAll()
 	if err != nil {
 		return nil, fmt.Errorf("failed to read from db: %w", err)
