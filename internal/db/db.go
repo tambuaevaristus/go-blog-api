@@ -3,8 +3,6 @@ package db
 import (
 	"context"
 	"fmt"
-
-	"github.com/aws/aws-sdk-go/private/protocol/query"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 

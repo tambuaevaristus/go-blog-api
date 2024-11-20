@@ -61,12 +61,16 @@ func (svc *Service) GetAll() ([]Item, error) {
 	return results, nil
 }
 
-func (svc *Service) Search(query string) []string {
+func (svc *Service) Search(query string) ([]string , error){
+	items, err := svc.GetAll()
+	if err != nil {
+		return nil, fmt.Errorf("failed to read from db: %w", err)
+	}
 	var results []string
-	for _, todo := range svc.todos {
+	for _, todo := range items {
 		if strings.Contains(todo.Task, query) {
 			results = append(results, todo.Task)
 		}
 	}
-	return results
+	return results, nil
 }
